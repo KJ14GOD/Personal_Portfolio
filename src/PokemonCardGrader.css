@@ -1,0 +1,367 @@
+/* Game Boy-inspired color palette */
+/* Reset browser default margins and paddings */
+html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    overflow-x: hidden; /* Prevent horizontal scrolling */
+  }
+  
+:root {
+    --gb-darkest: #0f380f;
+    --gb-dark: #306230;
+    --gb-light: #8bac0f;
+    --gb-lightest: #9bbc0f;
+    --pika-yellow: #F6D51F;
+    --pika-red: #E62721;
+    --pika-brown: #634321;
+  }
+  
+  @font-face {
+    font-family: 'Pokemon';
+    src: url('https://cdn.jsdelivr.net/npm/pokemon-font@1.8.1/fonts/pokemon-font.woff2') format('woff2');
+  }
+  
+  .grader-container {
+    min-height: 100vh;
+    padding: 2rem;
+    background-color: var(--pika-yellow);
+    background-image: 
+      radial-gradient(circle at 10px 10px, rgba(0,0,0,0.05) 2px, transparent 0),
+      radial-gradient(circle at 25px 25px, rgba(0,0,0,0.05) 2px, transparent 0);
+    background-size: 30px 30px;
+  }
+  
+  .pixel-border {
+    background: white;
+    border: 8px solid transparent;
+    border-image: url("data:image/svg+xml,%3Csvg width='8' height='8' viewBox='0 0 8 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 0h8v8H0V0zm1 1v6h6V1H1z' fill='%23306230'/%3E%3C/svg%3E") 2;
+    max-width: 1000px;
+    margin: 0 auto;
+    position: relative;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  }
+  
+  .content-wrapper {
+    padding: 2rem;
+  }
+  
+  .header {
+    position: relative;
+    text-align: center;
+    padding-top: 2rem;
+    margin-bottom: 3rem;
+  }
+  
+  .pikachu-ears {
+    position: absolute;
+    top: -20px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 200px;
+    height: 60px;
+  }
+  
+  .ear {
+    position: absolute;
+    width: 30px;
+    height: 60px;
+    background: var(--pika-yellow);
+    border: 4px solid var(--pika-brown);
+  }
+  
+  .ear:before {
+    content: '';
+    position: absolute;
+    top: 0;
+    width: 15px;
+    height: 15px;
+    background: var(--pika-black);
+  }
+  
+  .ear.left {
+    left: 30px;
+    transform: rotate(-15deg);
+  }
+  
+  .ear.right {
+    right: 30px;
+    transform: rotate(15deg);
+  }
+  
+  .retro-text {
+    font-family: 'Pokemon', monospace;
+    font-size: 2.5rem;
+    color: var(--pika-red);
+    text-shadow: 
+      2px 2px 0 var(--pika-brown),
+      -2px -2px 0 white,
+      2px -2px 0 white,
+      -2px 2px 0 white;
+    letter-spacing: 2px;
+  }
+  
+  .pixel-dots {
+    height: 4px;
+    background-image: 
+      linear-gradient(90deg, var(--gb-dark) 50%, transparent 50%),
+      linear-gradient(90deg, transparent 50%, var(--gb-dark) 50%);
+    background-size: 8px 2px;
+    margin: 1rem auto;
+    width: 80%;
+  }
+  
+  .upload-grid {
+    display: flex;
+    justify-content: space-evenly; /* Ensure proper spacing between the two placeholders */
+    gap: 2rem; /* Add some gap between the placeholders */
+    margin-bottom: 2rem;
+  }
+  
+  
+  .upload-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    width: 300px; /* Consistent box width */
+  }
+  
+  .upload-box {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 200px; /* Adjust the width to make placeholders wider */
+    height: 300px; /* Maintain the height for proportional look */
+    border: 4px dashed var(--gb-dark);
+    border-radius: 8px;
+    overflow: hidden;
+    cursor: pointer;
+    background: repeating-linear-gradient(
+      45deg,
+      var(--gb-lightest) 0,
+      var(--gb-lightest) 10px,
+      var(--gb-light) 10px,
+      var(--gb-light) 20px
+    );
+    transition: all 0.3s ease;
+  }
+  
+  .upload-box:hover {
+    border-color: var(--pika-red);
+    transform: translateY(-2px);
+  }
+  
+  
+  .retro-label {
+    font-family: 'Pokemon', monospace;
+    font-size: 1.4rem;
+    color: var(--gb-darkest);
+    text-align: center;
+    margin-bottom: 1rem; /* Adds spacing from the upload box */
+  }
+  
+  input[type="file"] {
+    display: none; /* Hide the default input */
+  }
+  
+  .file-input-label {
+    padding: 0.5rem 1rem;
+    font-family: 'Pokemon', monospace;
+    font-size: 1rem;
+    color: white;
+    background-color: var(--pika-red);
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .file-input-label:hover {
+    background-color: var(--gb-dark);
+  }
+  
+
+  .pokeball-icon {
+    width: 60px;
+    height: 60px;
+    background: linear-gradient(to bottom, var(--pika-red) 50%, white 50%); /* Red top, white bottom */
+    border: 4px solid black; /* Black outer border */
+    border-radius: 50%; /* Make it a circle */
+    position: relative;
+    animation: spin 2s linear infinite; /* Add spinning animation */
+    margin: 0 auto 1rem;
+  }
+  .pokeball-icon:before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: black; /* Horizontal black stripe in the middle */
+    transform: translateY(-50%);
+    z-index: 2; /* Ensures the stripe appears above the gradient */
+  }
+  
+  
+.pokeball-icon:after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 15px;
+    height: 15px;
+    background: white; /* White inner circle */
+    border: 3px solid black; /* Black border around the white circle */
+    border-radius: 50%; /* Make it circular */
+    transform: translate(-50%, -50%);
+    z-index: 3; /* Ensures the center circle appears above everything */
+  }
+  @keyframes spin {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+  
+  .submit-button {
+    width: 100%;
+    padding: 1rem;
+    font-family: 'Pokemon', monospace;
+    font-size: 1.2rem;
+    background: var(--pika-red);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .submit-button:before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.2),
+      transparent
+    );
+    transition: 0.5s;
+  }
+  
+  .submit-button:hover:before {
+    left: 100%;
+  }
+  
+  .submit-button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+  
+  .grade-display {
+    margin-top: 2rem;
+    text-align: center;
+  }
+  
+  .pixel-frame {
+    display: inline-block;
+    padding: 2rem;
+    background: var(--gb-lightest);
+    border: 8px solid var(--gb-darkest);
+    position: relative;
+  }
+  
+  .pixel-frame:before {
+    content: '';
+    position: absolute;
+    top: 4px;
+    left: 4px;
+    right: 4px;
+    bottom: 4px;
+    border: 2px solid var(--gb-dark);
+  }
+  
+  .grade-title {
+    font-family: 'Pokemon', monospace;
+    color: var(--gb-darkest);
+    margin-bottom: 1rem;
+  }
+  
+  .pixel-number {
+    font-family: 'Pokemon', monospace;
+    font-size: 3rem;
+    color: var(--pika-red);
+    text-shadow: 2px 2px 0 var(--gb-darkest);
+  }
+  
+  .pixel-stars {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 1rem;
+  }
+  
+  .star {
+    width: 20px;
+    height: 20px;
+    background: var(--pika-yellow);
+    clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+    animation: twinkle 1.5s infinite alternate;
+  }
+  
+  .star:nth-child(2) {
+    animation-delay: 0.2s;
+  }
+  
+  .star:nth-child(3) {
+    animation-delay: 0.4s;
+  }
+  
+  @keyframes twinkle {
+    from { transform: scale(1); }
+    to { transform: scale(1.2); }
+  }
+  
+  .pokeball-loading {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: red;
+    border: 2px solid white;
+    position: relative;
+    animation: shake 1s infinite;
+  }
+  
+  .pokeball-loading:before {
+    content: '';
+    position: absolute;
+    width: 24px;
+    height: 12px;
+    background: white;
+    bottom: -2px;
+    left: -2px;
+    border: 2px solid black;
+    border-radius: 0 0 12px 12px;
+  }
+  
+  .pokeball-loading:after {
+    content: '';
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    background: white;
+    border: 2px solid black;
+    border-radius: 50%;
+    top: 50%;
+  }
