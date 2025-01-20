@@ -1,18 +1,19 @@
-import React, { useState } from 'react';
-import './PokemonCardGrader.css';
+import React, { useState, useRef } from "react";
+import "./PokemonCardGrader.css";
 
 const PokemonCardGrader = () => {
   const [frontImage, setFrontImage] = useState(null);
   const [backImage, setBackImage] = useState(null);
-  const [grade, setGrade] = useState(null);
-  const [isLoading, setIsLoading] = useState(false);
+  const [frontScore, setFrontScore] = useState(null);
+  const [backScore, setBackScore] = useState(null);
+  const canvasRef = useRef(null);
 
   const handleImageUpload = (e, side) => {
     const file = e.target.files[0];
     if (file) {
       const reader = new FileReader();
       reader.onloadend = () => {
-        if (side === 'front') {
+        if (side === "front") {
           setFrontImage(reader.result);
         } else {
           setBackImage(reader.result);
@@ -22,116 +23,166 @@ const PokemonCardGrader = () => {
     }
   };
 
-  const generateRandomGrade = () => {
-    setIsLoading(true);
-    setTimeout(() => {
-      const grades = [1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5, 5.5, 6, 6.5, 7, 7.5, 8, 8.5, 9, 9.5, 10];
-      const randomGrade = grades[Math.floor(Math.random() * grades.length)];
-      setGrade(randomGrade);
-      setIsLoading(false);
-    }, 1500);
+  const calculateEdges = (imageSrc) => {
+    return new Promise((resolve) => {
+      const canvas = canvasRef.current;
+      const ctx = canvas.getContext("2d");
+
+      const image = new Image();
+      image.src = imageSrc;
+      image.onload = () => {
+        // Set canvas size to match the image
+        canvas.width = image.width;
+        canvas.height = image.height;
+
+        // Draw the image on the canvas
+        ctx.drawImage(image, 0, 0);
+
+        // Get pixel data
+        const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+        const { data, width, height } = imageData;
+
+        // Analyze edges
+        let leftEdge = width,
+          rightEdge = 0,
+          topEdge = height,
+          bottomEdge = 0;
+
+        for (let y = 0; y < height; y++) {
+          for (let x = 0; x < width; x++) {
+            const index = (y * width + x) * 4; // RGBA channels
+            const alpha = data[index + 3]; // Check alpha channel for presence of content
+
+            if (alpha > 0) {
+              // Update edges
+              leftEdge = Math.min(leftEdge, x);
+              rightEdge = Math.max(rightEdge, x);
+              topEdge = Math.min(topEdge, y);
+              bottomEdge = Math.max(bottomEdge, y);
+            }
+          }
+        }
+
+        const horizontalDiff = Math.abs(leftEdge - (width - rightEdge));
+        const verticalDiff = Math.abs(topEdge - (height - bottomEdge));
+
+        // Return the differences
+        resolve({ horizontalDiff, verticalDiff });
+      };
+    });
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (frontImage && backImage) {
-      generateRandomGrade();
+  const gradeImage = async (side) => {
+    const imageSrc = side === "front" ? frontImage : backImage;
+    if (!imageSrc) return;
+
+    const { horizontalDiff, verticalDiff } = await calculateEdges(imageSrc);
+
+    // Calculate score: Lower difference = higher score
+    const maxDiff = 50; // Adjust this based on how strict the grading is
+    const horizontalScore = Math.max(0, 10 - (horizontalDiff / maxDiff) * 10);
+    const verticalScore = Math.max(0, 10 - (verticalDiff / maxDiff) * 10);
+
+    const totalScore = ((horizontalScore + verticalScore) / 20) * 10;
+
+    if (side === "front") {
+      setFrontScore(totalScore.toFixed(2));
+    } else {
+      setBackScore(totalScore.toFixed(2));
     }
+  };
+
+  const handleGrade = async () => {
+    if (frontImage) await gradeImage("front");
+    if (backImage) await gradeImage("back");
   };
 
   return (
     <div className="grader-container">
       <div className="pixel-border">
         <div className="content-wrapper">
-          {/* Retro Header with Pikachu Ears */}
+          {/* Retro Header */}
           <div className="header">
-            <div className="pikachu-ears">
-              <div className="ear left"></div>
-              <div className="ear right"></div>
-            </div>
             <h1 className="retro-text">Pokémon Card Grader</h1>
-            <div className="pixel-dots"></div>
           </div>
 
-          <form onSubmit={handleSubmit} className="grader-form">
-          <div className="upload-grid">
-  {/* Front of Card */}
-  <div className="upload-section">
-    <label className="retro-label">Front of Card</label>
-    <label htmlFor="front-upload" className="upload-box">
-      {frontImage ? (
-        <img src={frontImage} alt="Front of card" className="preview-image" />
-      ) : (
-        <>
-          <div className="pokeball-icon"></div>
-          <span>Upload front view</span>
-        </>
-      )}
-    </label>
-    <input
-      type="file"
-      id="front-upload"
-      onChange={(e) => handleImageUpload(e, 'front')}
-      accept="image/*"
-    />
-    <label htmlFor="front-upload" className="file-input-label">Choose File</label>
-  </div>
-
-  {/* Back of Card */}
-  <div className="upload-section">
-    <label className="retro-label">Back of Card</label>
-    <label htmlFor="back-upload" className="upload-box">
-      {backImage ? (
-        <img src={backImage} alt="Back of card" className="preview-image" />
-      ) : (
-        <>
-          <div className="pokeball-icon"></div>
-          <span>Upload back view</span>
-        </>
-      )}
-    </label>
-    <input
-      type="file"
-      id="back-upload"
-      onChange={(e) => handleImageUpload(e, 'back')}
-      accept="image/*"
-    />
-    <label htmlFor="back-upload" className="file-input-label">Choose File</label>
-  </div>
-</div>
-
-
-            <button
-              type="submit"
-              disabled={!frontImage || !backImage || isLoading}
-              className="submit-button"
-            >
-              {isLoading ? (
-                <div className="loading">
-                  <div className="pokeball-loading"></div>
-                  <span>Analyzing...</span>
-                </div>
-              ) : (
-                <span>Get Grade Estimate</span>
-              )}
-            </button>
-
-            {grade && (
-              <div className="grade-display">
-                <div className="pixel-frame">
-                  <h3 className="grade-title">PSA Grade</h3>
-                  <div className="grade-value">
-                    <div className="pixel-number">{grade}</div>
-                  </div>
-                  <div className="pixel-stars">
-                    <div className="star"></div>
-                    <div className="star"></div>
-                    <div className="star"></div>
-                  </div>
-                </div>
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              handleGrade();
+            }}
+            className="grader-form"
+          >
+            <div className="upload-grid">
+              {/* Front of Card */}
+              <div className="upload-section">
+                <label className="retro-label">Front of Card</label>
+                <label htmlFor="front-upload" className="upload-box">
+                  {frontImage ? (
+                    <img
+                      src={frontImage}
+                      alt="Front of card"
+                      className="preview-image"
+                    />
+                  ) : (
+                    <>
+                      <div className="pokeball-icon"></div>
+                      <span>Upload front view</span>
+                    </>
+                  )}
+                </label>
+                <input
+                  type="file"
+                  id="front-upload"
+                  onChange={(e) => handleImageUpload(e, "front")}
+                  accept="image/*"
+                />
               </div>
-            )}
+
+              {/* Back of Card */}
+              <div className="upload-section">
+                <label className="retro-label">Back of Card</label>
+                <label htmlFor="back-upload" className="upload-box">
+                  {backImage ? (
+                    <img
+                      src={backImage}
+                      alt="Back of card"
+                      className="preview-image"
+                    />
+                  ) : (
+                    <>
+                      <div className="pokeball-icon"></div>
+                      <span>Upload back view</span>
+                    </>
+                  )}
+                </label>
+                <input
+                  type="file"
+                  id="back-upload"
+                  onChange={(e) => handleImageUpload(e, "back")}
+                  accept="image/*"
+                />
+              </div>
+            </div>
+
+            <button type="submit" className="submit-button">
+              Grade Cards
+            </button>
           </form>
+
+          {frontScore && (
+            <div className="grade-display">
+              <h3>Front Centering Score: {frontScore}/10</h3>
+            </div>
+          )}
+          {backScore && (
+            <div className="grade-display">
+              <h3>Back Centering Score: {backScore}/10</h3>
+            </div>
+          )}
+
+          {/* Hidden Canvas for Image Processing */}
+          <canvas ref={canvasRef} style={{ display: "none" }}></canvas>
         </div>
       </div>
     </div>

@@ -133,11 +133,11 @@ html, body {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    width: 200px; /* Adjust the width to make placeholders wider */
-    height: 300px; /* Maintain the height for proportional look */
+    width: 200px; /* Adjust width for your design */
+    height: 300px; /* Maintain the height */
     border: 4px dashed var(--gb-dark);
     border-radius: 8px;
-    overflow: hidden;
+    overflow: hidden; /* Ensures the image does not spill outside */
     cursor: pointer;
     background: repeating-linear-gradient(
       45deg,
@@ -148,6 +148,12 @@ html, body {
     );
     transition: all 0.3s ease;
   }
+  
+  .upload-box.has-image {
+    border: none; /* Remove border when an image is present */
+    background: none; /* Remove the background pattern */
+  }
+  
   
   .upload-box:hover {
     border-color: var(--pika-red);
@@ -365,3 +371,11 @@ html, body {
     border-radius: 50%;
     top: 50%;
   }
+
+  .preview-image {
+    width: 100%; /* Take full width of the container */
+    height: 200%; /* Take full height of the container */
+    object-fit: fill; /* Ensure the image fits fully within the container without being cropped */
+    object-position: center; /* Center the image inside the container */
+    border-radius: 4px; /* Maintain consistent rounded corners */
+}
