@@ -379,3 +379,46 @@ html, body {
     object-position: center; /* Center the image inside the container */
     border-radius: 4px; /* Maintain consistent rounded corners */
 }
+
+.result-screen {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+  padding: 2rem;
+}
+
+.digital-holder {
+  width: 300px;
+  height: 450px;
+  border: 10px solid var(--gb-dark);
+  border-radius: 15px;
+  background: linear-gradient(145deg, var(--pika-yellow), var(--gb-lightest));
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem;
+  position: relative;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+.digital-holder .score {
+  font-family: "Pokemon", sans-serif;
+  font-size: 1.5rem;
+  color: var(--pika-red);
+  background: var(--gb-darkest);
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  position: absolute;
+  top: -25px;
+  text-align: center;
+}
+
+.graded-image {
+  width: 100%;
+  height: auto;
+  max-height: 90%;
+  object-fit: contain;
+  border-radius: 8px;
+}
