@@ -1,5 +1,5 @@
 import React from "react";
-import Particles from "@tsparticles/react";
+import { Particles } from "@tsparticles/react";
 
 const ParticlesBackground = () => {
   return (
@@ -7,17 +7,17 @@ const ParticlesBackground = () => {
       options={{
         background: { color: "#181818" },
         particles: {
-          number: { value: 120, density: { enable: true, value_area: 1000 } },
-          move: { enable: true, speed: 1.5 },
+          number: { value: 150, density: { enable: true, value_area: 1200 } },
+          move: { enable: true, speed: 2 },
           size: { value: 3 },
-          opacity: { value: 0.7 },
-          color: { value: ["#ff7b00", "#2575fc"] },
-          links: { enable: true, distance: 150, color: "#fff", opacity: 0.3 },
+          opacity: { value: 0.8 },
+          color: { value: ["#ff007f", "#00eaff"] }, // Neon pink & cyan
+          links: { enable: true, distance: 120, color: "#fff", opacity: 0.2 },
         },
         interactivity: {
           events: {
-            onHover: { enable: true, mode: "repulse" },
-            onClick: { enable: true, mode: "push" },
+            onHover: { enable: true, mode: "bubble" },
+            onClick: { enable: true, mode: "repulse" },
           },
         },
       }}

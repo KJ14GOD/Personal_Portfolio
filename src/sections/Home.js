@@ -1,5 +1,6 @@
 import React from "react";
 import { motion } from "framer-motion";
+import { Link } from "react-scroll"; // Import react-scroll
 import ParticlesBackground from "../components/ParticlesBackground";
 import "./Home.css";
 
@@ -39,14 +40,16 @@ const Home = () => {
         </span>
       </motion.p>
 
-      <motion.a
-        href="#projects"
-        className="btn"
-        variants={buttonVariants}
-        whileHover="hover"
-      >
-        View My Work ↓
-      </motion.a>
+      {/* Use Link to scroll to About section */}
+      <Link to="about" smooth={true} >
+        <motion.a
+          className="btn"
+          variants={buttonVariants}
+          whileHover="hover"
+        >
+          View My Work ↓
+        </motion.a>
+      </Link>
     </section>
   );
 };

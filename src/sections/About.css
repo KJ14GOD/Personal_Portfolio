@@ -1,0 +1,96 @@
+.about-section {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: #121212;
+  color: white;
+}
+
+.about-container {
+  display: flex;
+  width: 80%;
+  max-width: 1200px;
+  justify-content: space-between;
+  align-items: center;
+  gap: 50px;
+}
+
+.about-text {
+  flex: 1;
+  max-width: 500px;
+}
+
+.about-text h1 {
+  font-size: 2.5rem;
+  font-weight: bold;
+  position: relative;
+  display: inline-block;
+  margin-bottom: 20px;
+  color: #ff7b00;
+}
+
+.about-text h1::after {
+  content: "";
+  width: 50%;
+  height: 4px;
+  background-color: #ff7b00;
+  position: absolute;
+  bottom: -5px;
+  left: 0;
+}
+
+.about-text p {
+  font-size: 1.2rem;
+  line-height: 1.5;
+  color: #bbb;
+}
+
+/* Framework Grid */
+.frameworks-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+}
+
+/* Framework Card */
+.framework-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.05);
+  padding: 20px;
+  border-radius: 10px;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  text-align: center;
+}
+
+.framework-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 5px 15px rgba(255, 60, 0, 0.5);
+}
+
+/* Framework Icon */
+.framework-icon {
+  width: 60px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 10px;
+}
+
+.framework-logo {
+  width: 50px;
+  height: 50px;
+  object-fit: contain;
+}
+
+/* Framework Name */
+.framework-name {
+  font-size: 1rem;
+  font-weight: bold;
+  color: #ffffff;
+}
